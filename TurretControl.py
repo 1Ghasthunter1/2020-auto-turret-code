@@ -8,12 +8,9 @@ pitch_axis = 1
 serialData = ''
 solenoidState = False
 
-arduino = serial.Serial(port='COM4',
-                        baudrate=250000,
-                        parity = serial.PARITY_NONE,
-                        stopbits = serial.STOPBITS_ONE,
-                        bytesize=serial.EIGHTBITS,
-                        timeout=0)
+arduino = serial.Serial(port='COM4', baudrate=9600)
+
+time.sleep(5)
 
 pygame.init()
 
@@ -59,11 +56,10 @@ def getSolenoidState():
 
     
 def writeToSerial():
-    time.sleep(.1)
     getXVal()
     getYVal()
     getSolenoidState()
-    serialData = ('<'+turretVal+", "+pitchVal+", "+serialSolenoidState+">")
+    serialData = ('<'+turretVal+", "+pitchVal+", "+serialSolenoidState+">\r")
     print(serialData)
     arduino.write(serialData)
         
