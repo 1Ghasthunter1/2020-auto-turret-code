@@ -35,7 +35,7 @@ AccelStepper pStepper(1, pStep, pDir);
 //============
 
 void setup() {
-  Serial.begin(250000); //Setup serial
+  Serial.begin(9600); //Setup serial
   initializeComponents();
 }
 
@@ -48,7 +48,6 @@ void loop() {
             // this temporary copy is necessary to protect the original data
             //   because strtok() used in parseData() replaces the commas with \0
         parseData();
-        processData();
         maybeShootTurret();
         newData = false;
     }
@@ -103,20 +102,23 @@ void parseData() {      // split the data into its parts
 
     strtokIndx = strtok(NULL, ",");
     solenoidState = atoi(strtokIndx);
+    processData();
+    
 
 }
 
 //============
 
 void processData() {
-  xInt = (xInt-200)*-10;
-  yInt = (yInt-200)*6;
+  xInt = (xInt-250)*-5;
+  yInt = (yInt-250)*6;
   if(solenoidState == 1){
     solenoidEnable = true;
     }
   else if(solenoidState == 0){
     solenoidEnable = false;
     }
+    
 }
 
 void initializeComponents() {
@@ -139,7 +141,7 @@ void initializeComponents() {
   digitalWrite(pMS2, HIGH);
 
   //set stepper speeds and accel
-  tStepper.setMaxSpeed(5000);
+  tStepper.setMaxSpeed(2000);
   pStepper.setMaxSpeed(2000);
   tStepper.setAcceleration(4000);
   pStepper.setAcceleration(4000);
@@ -147,10 +149,10 @@ void initializeComponents() {
 }
 
 void runSteppers(){
-  pStepper.moveTo(yInt);
-  tStepper.moveTo(xInt);
+  pStepper.moveTo(xInt);
+  tStepper.moveTo(yInt);
   tStepper.run();
-  pStepper.run();
+  //pStepper.run();
   
 }
 
