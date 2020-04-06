@@ -10,7 +10,7 @@ solenoidState = False
 
 arduino = serial.Serial(port='COM4', baudrate=9600)
 
-time.sleep(5)
+time.sleep(2)
 
 pygame.init()
 
