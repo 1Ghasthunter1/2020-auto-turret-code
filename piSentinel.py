@@ -4,21 +4,12 @@ import serial
 
 try:
     arduinoSerial = serial.Serial(port = "/dev/ttyUSB0", baudrate = 9600)
-<<<<<<< HEAD
     time.sleep(3)
                             
 except:
     print("No Serial found")
     exit()
     time.sleep(3)
-=======
-    time.sleep(2)
-except:
-    print "No Serial Found"
-    time.sleep(2)
-    exit()
-                              
->>>>>>> 25708cdefd92c453b897b014363f6a3b997b986b
                               
 video=cv2.VideoCapture(0)
 
@@ -40,31 +31,17 @@ while True:
         arduinoSerial.write("< , , 0>")
         
     boxes = np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
-<<<<<<< HEAD
 
-=======
-    if len(boxes) == 0:
-        solenoidState = "0"
-        arduino.write("< , , "+solenoidState+">")
->>>>>>> 25708cdefd92c453b897b014363f6a3b997b986b
     for (xA, yA, xB, yB) in boxes:
         # display the detected boxes in the colour picture
         cv2.rectangle(frame, (xA, yA), (xB, yB),
                           (0, 255, 0), 2)
         centerX = str((xA+xB)/2)
         centerY = str((yA+yB)/2)
-<<<<<<< HEAD
         solenoidState = "1"    #left this here, presumably because  if detectMultiScale returns None, then there will be no terms in boxes, and the for loop will not execute
         cv2.putText(frame, "Coords: " + centerX + ", " + centerY, (10, 200), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 0, 0), 3)
         serialData = "<"+centerX+", 250, "+solenoidState+">"
         arduinoSerial.write(serialData)
-=======
-        solenoidState = "1"
-
-        cv2.putText(frame, "Coords: " + centerX + ", " + centerY, (10, 200), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 0, 0), 3)
-        arduino.write("<"+centerX+", "+centerY+", "+solenoidState+">")
-        
->>>>>>> 25708cdefd92c453b897b014363f6a3b997b986b
   
 #Show frame
     cv2.imshow("Capture", frame)
