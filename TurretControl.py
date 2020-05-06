@@ -14,6 +14,7 @@ arduino = serial.Serial(port='COM4',
                         stopbits = serial.STOPBITS_ONE,
                         bytesize=serial.EIGHTBITS,
                         timeout=0)
+time.sleep(2);
 
 pygame.init()
 
@@ -30,12 +31,15 @@ for i in range(joystick_count):
 
 def getXVal():
     global turretVal
-    turretVal = joystick.get_axis(turret_axis)
-    turretVal = round(turretVal, 2)
-    turretVal = turretVal*100
-    turretVal = turretVal + 200
-    turretVal = str(turretVal)
-    turretVal = turretVal[:3]
+    if joystick.get_button(2) == 1:
+        turretVal = "-1"
+    else:
+        turretVal = joystick.get_axis(turret_axis)
+        turretVal = round(turretVal, 2)
+        turretVal = turretVal*100
+        turretVal = turretVal + 200
+        turretVal = str(turretVal)
+        turretVal = turretVal[:3]
 
 def getYVal():
     global pitchVal
@@ -55,17 +59,19 @@ def getSolenoidState():
     elif solenoidState == False:
         serialSolenoidState = "0"
 
+        
+
     
 
     
 def writeToSerial():
-    time.sleep(.1)
+    time.sleep(.01)
     getXVal()
     getYVal()
     getSolenoidState()
     serialData = ('<'+turretVal+", "+pitchVal+", "+serialSolenoidState+">")
     print(serialData)
-    arduino.write(serialData)
+    arduino.write(bytes(serialData, 'utf-8'))
         
 
 while True:
